@@ -1,0 +1,27 @@
+name: Setup OpenModelica
+author: Kristian Zarebski
+description: Setup installation of OpenModelica
+
+inputs:
+  libraries:
+    description: OpenModelica Libraries to Install
+    required: false
+    default: |
+      modelica@3.2.3
+  cpp-runtime-library:
+    description: Install C++ Runtime Library
+    required: false
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install OpenModelica
+      run: |
+        INSTALL_OMC_CPP_LIBS=${{ inputs.cpp-runtime-library }} \
+        $GITHUB_ACTION_PATH/install-om.sh
+
+branding:
+  icon: trending-up
+  color: blue
+

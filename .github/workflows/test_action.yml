@@ -1,0 +1,14 @@
+
+name: OpenModelica Action Check
+on: [release]
+jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: artemis-beta/setup-openmodelica@testing
+          with:
+            libraries: |
+                modelica@3.2.3
+                powergrids
+                systemdynamics@2.1.1
+            cpp-runtime-library: install
