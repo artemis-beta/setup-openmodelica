@@ -22,7 +22,7 @@ if [ "${INSTALL_OMC_CPP_LIBS}" != "false" ]; then
     sudo apt install -y libomccpp
 fi
 
-if [ "$#" -neq 0 ]; then
+if [ "$#" -ne 0 ]; then
     echo "::group::Install Modelica Libraries"
     for library in "$@"
     do
