@@ -22,7 +22,7 @@ if [ "${INSTALL_OMC_CPP_LIBS}" != "false" ]; then
     sudo apt install -y libomccpp
 fi
 
-if [ $# -neq 0 ]; then
+if [ "$#" -neq 0 ]; then
     echo "::group::Install Modelica Libraries"
     for library in "$@"
     do
@@ -48,7 +48,7 @@ if [ $# -neq 0 ]; then
     echo "::endgroup::"
 fi
 
-if [ "${MODEL_SOURCE_PATH}" != "false" ]; then
+if [ "${MODEL_SOURCE_PATH}" == "false" ]; then
     if [ -n "$(ls *.mo | head -n 1)" ]; then
         MODEL_SOURCE_PATH=$(ls *.mo | head -n 1)
     fi
