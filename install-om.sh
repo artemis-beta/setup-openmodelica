@@ -19,7 +19,7 @@ sudo apt install omc -y
 echo "::endgroup::"
 
 if [ "${INSTALL_OMC_CPP_LIBS}" != "false" ]; then
-    sudo apt install -y libomcpp
+    sudo apt install -y libomccpp
 fi
 
 if [ $# -neq 0 ]; then
@@ -32,16 +32,54 @@ if [ $# -neq 0 ]; then
             sudo apt install -y omlib-$LIBRARY_NAME-$LIBRARY_VERSION
         else
             LIBRARY_VER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}-([[:digit:]]|\.)+$")
-            LIBRART_NOVER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}$")
+            LIBRARY_NOVER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}$")
             if [ -n "$LIBRARY_VER" ]; then
-                echo "::error title=Install::Installing package '${LIBRARY_VER}'"
+                echo "::notice title=Install::Installing package '${LIBRARY_VER}'"
                 sudo apt install -y $LIBRARY_VER
             elif [ -n "$LIBRARY_NOVER" ]; then
-                echo "::error title=Install::Installing package '${LIBRARY_NOVER}'"
+                echo "::notice title=Install::Installing package '${LIBRARY_NOVER}'"
                 sudo apt install -y $LIBRART_NOVER
             else
                 echo "::error title=Unknown Library::Cannot find installation candidate for '${library}'"
+                exit 1
             fi
         fi
     done
+    echo "::endgroup::"
+fi
+
+if [ "${MODEL_SOURCE_PATH}" != "false" ]; then
+    if [ -n "$(ls *.mo | head -n 1)" ]; then
+        MODEL_SOURCE_PATH=$(ls *.mo | head -n 1)
+    fi
+fi
+
+if [ -n "${MODEL_SOURCE_PATH}" ]; then
+    echo "::group::Compile Modelica Model"
+    OMC_ARGS="-s ${MODEL_SOURCE_PATH}"
+
+    if [ "${BUILD_DEBUG}" != "false" ]; then
+        OMC_ARGS="$OMC_CMD -d"
+    fi
+
+    if [ "${MODEL_NAME}" != "false" ]; then
+        OMC_ARGS="${OMC_CMD} +i=${MODEL_NAME}"
+    fi
+
+    echo "::notice title=Model Run::Creating model sources and Makefile"
+    omc $OMC_ARGS Modelica
+
+    if [ -z "$(ls *.makefile | head -n 1)" ]; then
+        echo "::error title=Configuration Failure::Failed to create GNU Makefile"
+        exit 1
+    fi
+
+    MAKEFILE=$(ls *.makefile | head -n 1)
+
+    echo "::notice title=Model Run::Compiling Model"
+    make -f $MAKEFILE
+
+    echo "::notice title=Model Run::Executing Model"
+    BINARY_FILE=$(ls -tr | tail -n 1)
+    ./$BINARY_FILE
 fi

@@ -5,6 +5,7 @@ jobs:
     test:
       runs-on: ubuntu-latest
       steps:
+        - uses: actions/checkout@v2
         - uses: artemis-beta/setup-openmodelica@testing
           with:
             libraries: |
@@ -12,3 +13,13 @@ jobs:
                 powergrids
                 systemdynamics@2.1.1
             cpp-runtime-library: install
+            model-source-path: testing/SineCurrent.mo
+            model-name: SineCurrentModel
+            debug: 'yes'
+            
+        - name: Cache Primes
+          id: cache-solutions
+          uses: actions/cache@v2
+          with:
+            path: "*.mat"
+            key: ${{ runner.os }}-model-solutions
