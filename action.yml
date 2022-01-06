@@ -20,6 +20,7 @@ runs:
       run: |
         INSTALL_OMC_CPP_LIBS=${{ inputs.cpp-runtime-library }} \
         $GITHUB_ACTION_PATH/install-om.sh
+      shell: bash
 
 branding:
   icon: trending-up
