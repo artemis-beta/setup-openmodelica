@@ -59,11 +59,11 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     OMC_ARGS="-s ${MODEL_SOURCE_PATH}"
 
     if [ "${BUILD_DEBUG}" != "false" ]; then
-        OMC_ARGS="$OMC_CMD -d"
+        OMC_ARGS="${OMC_ARGS} -d"
     fi
 
     if [ "${MODEL_NAME}" != "false" ]; then
-        OMC_ARGS="${OMC_CMD} +i=${MODEL_NAME}"
+        OMC_ARGS="${OMC_ARGS} +i=${MODEL_NAME}"
     fi
 
     echo "::notice title=Model Run::Creating model sources and Makefile"
