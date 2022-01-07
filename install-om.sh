@@ -33,7 +33,7 @@ if [ "$#" -ne 0 ]; then
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
-            LIBRARIES="$LIBRARIES $library"
+            LIBRARIES="$LIBRARIES $LIBRARY_NAME"
             OMSHELL_CMD="installPackage(${LIBRARY_NAME}, \"$LIBRARY_VERSION\")" > $INSTALL_SCRIPT
         else
             OMSHELL_CMD="installPackage(${LIBRARY_NAME})" > $INSTALL_SCRIPT
