@@ -27,6 +27,14 @@ inputs:
     description: Path to modelica source to build and run
     required: false
     default: 'false'
+  script-path:
+    description: Path to Modelica script .mos file
+    required: false
+    default: 'false'
+  script:
+    description: Modelica script to run
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -38,6 +46,18 @@ runs:
         MODEL_NAME=${{ inputs.model-name }} \
         BUILD_DEBUG=${{ inputs.debug }} \
         $GITHUB_ACTION_PATH/install-om.sh modelica@${{ inputs.msl-version }} $(echo "${{ inputs.libraries }}" | xargs)
+      shell: bash
+
+    - name: Run Modelica Script
+      run: omc ${{ inputs.script-path }}
+      if: ${{ inputs.script-path }} != 'false'
+      shell: bash
+
+    - name: Run OMShell
+      run: |
+        printf "${{ inputs.script }}" > runScript.mos
+        omc runScript.mos
+      if: ${{ inputs.script }} != 'false'
       shell: bash
 
 branding:

@@ -20,32 +20,24 @@ if [ "${INSTALL_OMC_CPP_LIBS}" != "false" ]; then
     sudo apt install -y libomccpp
 fi
 
+INSTALL_SCRIPT=$PWD/installLibraries.mos
+
 if [ "$#" -ne 0 ]; then
     echo "::group::Install Modelica Libraries"
     for library in "$@"
     do
+        echo "::notice title=Install::Installing package '$library}'"
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
-            if [ -z "$(sudo apt-cache search omlib-$LIBRARY_NAME-$LIBRARY_VERSION)" ]; then
-                echo "::errpr title=Install::No such package '${omlib-$LIBRARY_NAME-$LIBRARY_VERSION}'"
-                exit 1
-            fi
-            echo "::notice title=Install::Installing package '${omlib-$LIBRARY_NAME-$LIBRARY_VERSION}'"
-            sudo apt install -y omlib-$LIBRARY_NAME-$LIBRARY_VERSION
+            echo "installPackage(${LIBRARY_NAME}, \"$LIBRARY_VERSION\")" > $INSTALL_SCRIPT
         else
-            LIBRARY_VER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}-([[:digit:]]|\.)+$")
-            LIBRARY_NOVER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}$")
-            if [ -n "$LIBRARY_VER" ]; then
-                echo "::notice title=Install::Installing package '${LIBRARY_VER}'"
-                sudo apt install -y $LIBRARY_VER
-            elif [ -n "$LIBRARY_NOVER" ]; then
-                echo "::notice title=Install::Installing package '${LIBRARY_NOVER}'"
-                sudo apt install -y $LIBRART_NOVER
-            else
-                echo "::error title=Unknown Library::Cannot find installation candidate for '${library}'"
-                exit 1
-            fi
+            echo "installPackage(${LIBRARY_NAME})" > $INSTALL_SCRIPT
+        fi
+        INSTALL_SUCCESS=$(omc $INSTALL_SCRIPT)
+        if [ "$INSTALL_SUCESS" != "true" ]; then
+            echo "::error title=Inspall Library Failure::Failed to install library ${library}"
+            exit 1
         fi
     done
     echo "::endgroup::"
