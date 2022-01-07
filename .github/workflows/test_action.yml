@@ -9,8 +9,8 @@ jobs:
         - uses: artemis-beta/setup-openmodelica@testing
           with:
             libraries: |
-                powergrids
-                systemdynamics@2.1.1
+                PowerGrids
+                SystemDynamics@2.1.1
             cpp-runtime-library: install
             model-source-path: testing/SineCurrent.mo
             model-name: SineCurrentModel
