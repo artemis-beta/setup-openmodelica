@@ -22,3 +22,10 @@ jobs:
           with:
             path: "*.mat"
             key: ${{ runner.os }}-model-solutions
+        
+        - name: Cache OpenModelica Libraries
+          id: cache-libraries
+          uses: actions/cache@v2
+          with:
+            path: $HOME/.openmodelica
+            key: ${{ runner.os }}-modelica-install

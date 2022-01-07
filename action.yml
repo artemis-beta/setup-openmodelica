@@ -45,7 +45,7 @@ runs:
         MODEL_SOURCE_PATH=${{ inputs.model-source-path }} \
         MODEL_NAME=${{ inputs.model-name }} \
         BUILD_DEBUG=${{ inputs.debug }} \
-        $GITHUB_ACTION_PATH/install-om.sh modelica@${{ inputs.msl-version }} $(echo "${{ inputs.libraries }}" | xargs)
+        $GITHUB_ACTION_PATH/install-om.sh Modelica@${{ inputs.msl-version }} $(echo "${{ inputs.libraries }}" | xargs)
       shell: bash
 
     - name: Run Modelica Script

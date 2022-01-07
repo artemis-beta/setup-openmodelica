@@ -26,17 +26,18 @@ if [ "$#" -ne 0 ]; then
     echo "::group::Install Modelica Libraries"
     for library in "$@"
     do
-        echo "::notice title=Install::Installing package '$library}'"
+        echo "::notice title=Install::Installing package '$library'"
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
-            echo "installPackage(${LIBRARY_NAME}, \"$LIBRARY_VERSION\")" > $INSTALL_SCRIPT
+            OMSHELL_CMD="installPackage(${LIBRARY_NAME}, \"$LIBRARY_VERSION\")" > $INSTALL_SCRIPT
         else
-            echo "installPackage(${LIBRARY_NAME})" > $INSTALL_SCRIPT
+            OMSHELL_CMD="installPackage(${LIBRARY_NAME})" > $INSTALL_SCRIPT
         fi
+        echo $OMSHELL_CMD > $INSTALL_SCRIPT
         INSTALL_SUCCESS=$(omc $INSTALL_SCRIPT)
         if [ "$INSTALL_SUCESS" != "true" ]; then
-            echo "::error title=Inspall Library Failure::Failed to install library ${library}"
+            echo "::error title=Install Library Failure::OMShell command '$OMSHELL_CMD' failed"
             exit 1
         fi
     done
@@ -80,3 +81,7 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     BINARY_FILE=$(ls -tr | tail -n 1)
     ./$BINARY_FILE
 fi
+
+echo "::group::OMC Export"
+echo "::notice title=Updating PATH::Adding 'omc' to \$PATH in \$GITHUB_ENV"
+echo "PATH=\"$PATH\"" >> $GITHUB_ENV
