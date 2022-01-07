@@ -57,20 +57,6 @@ runs:
       if: ${{ inputs.script != 'false' }}
       shell: bash
 
-    - name: Cache Solutions
-      id: cache-solutions
-      uses: actions/cache@v2
-      with:
-        path: "$GITHUB_WORKSPACE/*.mat"
-        key: ${{ runner.os }}-model-solutions
-    
-    - name: Cache OpenModelica Libraries
-      id: cache-libraries
-      uses: actions/cache@v2
-      with:
-        path: $HOME/.openmodelica
-        key: ${{ runner.os }}-modelica-install
-
 branding:
   icon: trending-up
   color: blue

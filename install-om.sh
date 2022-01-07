@@ -88,8 +88,6 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     echo "::endgroup::"
 fi
 
-cp *.mat $GITHUB_WORKSPACE/
-
 echo "::group::OMC Export"
 echo "::notice title=Updating PATH::Adding 'omc' to \$PATH in \$GITHUB_ENV"
 echo "PATH=\"$PATH\"" >> $GITHUB_ENV
