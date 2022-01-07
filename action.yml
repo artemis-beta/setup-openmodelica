@@ -59,7 +59,7 @@ runs:
       id: cache-solutions
       uses: actions/cache@v2
       with:
-        path: "*.mat"
+        path: "$GITHUB_WORKSPACE/*.mat"
         key: ${{ runner.os }}-model-solutions
     
     - name: Cache OpenModelica Libraries
