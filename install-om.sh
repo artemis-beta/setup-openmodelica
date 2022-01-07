@@ -36,7 +36,7 @@ if [ "$#" -ne 0 ]; then
         fi
         echo $OMSHELL_CMD > $INSTALL_SCRIPT
         INSTALL_SUCCESS=$(omc $INSTALL_SCRIPT)
-        if [ "$INSTALL_SUCESS" != "true" ]; then
+        if [ "$INSTALL_SUCCESS" != "true" ]; then
             echo "::error title=Install Library Failure::OMShell command '$OMSHELL_CMD' failed"
             exit 1
         fi
