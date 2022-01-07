@@ -56,7 +56,7 @@ fi
 
 if [ -n "${MODEL_SOURCE_PATH}" ]; then
     echo "::group::Compile & Run Modelica Model"
-    MODEL_BUILD_SCRIPT=$PWD/modelConf.mos
+    MODEL_BUILD_SCRIPT=$PWD/modelBuild.mos
 
     echo "::notice title=Model Run::Creating model sources and Makefile"
     echo "loadFile(\"${MODEL_SOURCE_PATH}\");" > $MODEL_BUILD_SCRIPT
@@ -72,6 +72,9 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
 
     echo "simulate(${MODEL_NAME});" >> $MODEL_BUILD_SCRIPT
     echo "printErrorString();" >> $MODEL_BUILD_SCRIPT
+
+    echo "::notice title=Model Run::Created script '$MODEL_BUILD_SCRIPT':"
+    cat $MODEL_BUILD_SCRIPT
 
     echo "::notice title=Model Run::Compiling Model '${MODEL_NAME}' with OMC and Running"
     omc $MODEL_BUILD_SCRIPT

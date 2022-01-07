@@ -15,6 +15,7 @@ jobs:
             model-source-path: testing/SineCurrent.mo
             model-name: SineCurrentModel
             debug: 'yes'
+            msl-version: '3.2.3'
             
         - name: Cache Primes
           id: cache-solutions
