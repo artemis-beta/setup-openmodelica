@@ -19,10 +19,6 @@ inputs:
     description: Name of model to build
     required: false
     default: 'false'
-  debug:
-    description: Compile in debug mode
-    required: false
-    default: 'false'
   model-source-path:
     description: Path to modelica source to build and run
     required: false
@@ -44,7 +40,6 @@ runs:
         INSTALL_OMC_CPP_LIBS=${{ inputs.cpp-runtime-library }} \
         MODEL_SOURCE_PATH=${{ inputs.model-source-path }} \
         MODEL_NAME=${{ inputs.model-name }} \
-        BUILD_DEBUG=${{ inputs.debug }} \
         $GITHUB_ACTION_PATH/install-om.sh Modelica@${{ inputs.msl-version }} $(echo "${{ inputs.libraries }}" | xargs)
       shell: bash
 
@@ -59,6 +54,20 @@ runs:
         omc runScript.mos
       if: ${{ inputs.script != 'false' }}
       shell: bash
+
+    - name: Cache Solutions
+      id: cache-solutions
+      uses: actions/cache@v2
+      with:
+        path: "*.mat"
+        key: ${{ runner.os }}-model-solutions
+    
+    - name: Cache OpenModelica Libraries
+      id: cache-libraries
+      uses: actions/cache@v2
+      with:
+        path: $HOME/.openmodelica
+        key: ${{ runner.os }}-modelica-install
 
 branding:
   icon: trending-up
