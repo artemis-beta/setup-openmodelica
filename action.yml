@@ -29,12 +29,11 @@ runs:
   steps:
     - name: Install OpenModelica
       run: |
-        LATEST_MODELICA_VER=$(sudo apt search "omlib-modelica" | grep -oE "^omlib-modelica-([[:digit:]]|\.)+" | cut -d '-' -f 3)
         INSTALL_OMC_CPP_LIBS=${{ inputs.cpp-runtime-library }} \
         MODEL_SOURCE_PATH=${{ inputs.model-source-path }} \
         MODEL_NAME=${{ inputs.model-name }} \
         BUILD_DEBUG=${{ inputs.debug }} \
-        $GITHUB_ACTION_PATH/install-om.sh modelica@$LATEST_MODELICA_VER ${{ inputs.libraries }}
+        $GITHUB_ACTION_PATH/install-om.sh modelica@3.2.3 ${{ inputs.libraries }}
       shell: bash
 
 branding:
