@@ -29,6 +29,11 @@ if [ "$#" -ne 0 ]; then
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
+            if [ -z "$(sudo apt-cache search omlib-$LIBRARY_NAME-$LIBRARY_VERSION)" ]; then
+                echo "::errpr title=Install::No such package '${omlib-$LIBRARY_NAME-$LIBRARY_VERSION}'"
+                exit 1
+            fi
+            echo "::notice title=Install::Installing package '${omlib-$LIBRARY_NAME-$LIBRARY_VERSION}'"
             sudo apt install -y omlib-$LIBRARY_NAME-$LIBRARY_VERSION
         else
             LIBRARY_VER=$(sudo apt-cache search "omlib-${library}" | cut -d ' ' -f 1 | grep -oE "^omlib-${library}-([[:digit:]]|\.)+$")
