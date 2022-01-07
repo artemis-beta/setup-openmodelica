@@ -66,7 +66,7 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1 | xargs)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
-            echo "loadModel($LIBRARY_NAME, {"$LIBRARY_VERSION"});" >> $MODEL_BUILD_SCRIPT
+            echo "loadModel($LIBRARY_NAME, {\"$LIBRARY_VERSION\"});" >> $MODEL_BUILD_SCRIPT
         else
             LIBRARY_NAME=$(echo ${library} | xargs)
             echo "loadModel($LIBRARY_NAME);" >> $MODEL_BUILD_SCRIPT
