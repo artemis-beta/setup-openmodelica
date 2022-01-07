@@ -61,9 +61,14 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     echo "::notice title=Model Run::Creating model sources and Makefile"
     echo "loadFile(\"${MODEL_SOURCE_PATH}\");" > $MODEL_BUILD_SCRIPT
     
-    for library in "$LIBRARIES"
+    for library in "$@"
     do
-        echo "loadModel($library);" >> $MODEL_BUILD_SCRIPT
+        if [[ "$library" == *"@"* ]]; then
+            LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1 | xargs)
+        else
+            LIBRARY_NAME=$(echo ${library} | xargs)
+        fi
+        echo "loadModel($LIBRARY_NAME);" >> $MODEL_BUILD_SCRIPT
     done
 
     if [ "${MODEL_NAME}" == "false" ]; then
