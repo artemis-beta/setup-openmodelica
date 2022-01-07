@@ -84,5 +84,4 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     echo "::notice title=Model Run::Executing binary $BINARY_FILE"
     BINARY_FILE=$(ls -tr | tail -n 1)
     ./$BINARY_FILE
-    exit 0
 fi

@@ -33,7 +33,7 @@ runs:
         MODEL_SOURCE_PATH=${{ inputs.model-source-path }} \
         MODEL_NAME=${{ inputs.model-name }} \
         BUILD_DEBUG=${{ inputs.debug }} \
-        $GITHUB_ACTION_PATH/install-om.sh modelica@3.2.3 ${{ inputs.libraries }}
+        $GITHUB_ACTION_PATH/install-om.sh modelica@3.2.3 $(echo "${{ inputs.libraries }}" | xargs)
       shell: bash
 
 branding:
