@@ -50,7 +50,7 @@ runs:
 
     - name: Run OMShell
       run: |
-        printf "${{ inputs.script }}" > runScript.mos
+        printf '${{ inputs.script }}' > runScript.mos
         echo "Created script: "
         cat runScript.mos
         omc runScript.mos
