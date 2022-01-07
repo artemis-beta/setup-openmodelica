@@ -34,5 +34,8 @@ jobs:
           with:
             path: $HOME/.openmodelica
             key: ${{ runner.os }}-modelica-install
+
+        - name: Test OMC Still Available
+          run: omc --version
         
 
