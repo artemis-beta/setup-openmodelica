@@ -16,8 +16,12 @@ jobs:
             model-name: SineCurrentModel
             debug: 'yes'
             msl-version: '3.2.3'
+            script: |
+              loadLibrary(Modelica);
+              simulate(Modelica.Fluid.Examples.HeatSystem);
+              printErrorString();
             
-        - name: Cache Primes
+        - name: Cache Solutions
           id: cache-solutions
           uses: actions/cache@v2
           with:
@@ -30,3 +34,5 @@ jobs:
           with:
             path: $HOME/.openmodelica
             key: ${{ runner.os }}-modelica-install
+        
+
