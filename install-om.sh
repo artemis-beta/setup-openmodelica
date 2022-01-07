@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+set -e
+
 echo "::group::Setup"
 
 echo "::notice title=Update Sources List"
@@ -21,6 +23,7 @@ if [ "${INSTALL_OMC_CPP_LIBS}" != "false" ]; then
 fi
 
 INSTALL_SCRIPT=$PWD/installLibraries.mos
+LIBRARIES=""
 
 if [ "$#" -ne 0 ]; then
     echo "::group::Install Modelica Libraries"
@@ -30,6 +33,7 @@ if [ "$#" -ne 0 ]; then
         if [[ "$library" == *"@"* ]]; then
             LIBRARY_NAME=$(echo ${library} | cut -d '@' -f 1)
             LIBRARY_VERSION=$(echo ${library} | cut -d '@' -f 2)
+            LIBRARIES="$LIBRARIES $library"
             OMSHELL_CMD="installPackage(${LIBRARY_NAME}, \"$LIBRARY_VERSION\")" > $INSTALL_SCRIPT
         else
             OMSHELL_CMD="installPackage(${LIBRARY_NAME})" > $INSTALL_SCRIPT
@@ -51,35 +55,27 @@ if [ "${MODEL_SOURCE_PATH}" == "false" ]; then
 fi
 
 if [ -n "${MODEL_SOURCE_PATH}" ]; then
-    echo "::group::Compile Modelica Model"
-    OMC_ARGS="-s ${MODEL_SOURCE_PATH}"
-
-    if [ "${BUILD_DEBUG}" != "false" ]; then
-        OMC_ARGS="${OMC_ARGS} -d"
-    fi
-
-    if [ "${MODEL_NAME}" != "false" ]; then
-        OMC_ARGS="${OMC_ARGS} +i=${MODEL_NAME}"
-    fi
+    echo "::group::Compile & Run Modelica Model"
+    MODEL_BUILD_SCRIPT=$PWD/modelConf.mos
 
     echo "::notice title=Model Run::Creating model sources and Makefile"
-    omc $OMC_ARGS Modelica
+    echo "loadFile(\"${MODEL_SOURCE_PATH}\");" > $MODEL_BUILD_SCRIPT
+    
+    for library in "$LIBRARIES"
+    do
+        echo "loadModel($library);" >> $MODEL_BUILD_SCRIPT
+    done
 
-    if [ -z "$(ls *.makefile | head -n 1)" ]; then
-        echo "::error title=Configuration Failure::Failed to create GNU Makefile"
-        exit 1
+    if [ "${MODEL_NAME}" == "false" ]; then
+        MODEL_NAME=$(cat ${MODEL_SOURCE_PATH} | grep -E "model" | head -n 1 | cut -d ' ' -f 2)
     fi
 
-    MAKEFILE=$(ls *.makefile | head -n 1)
+    echo "simulate(${MODEL_NAME});" >> $MODEL_BUILD_SCRIPT
+    echo "printErrorString();" >> $MODEL_BUILD_SCRIPT
 
-    echo "::notice title=Model Run::Compiling Model"
-    make -f $MAKEFILE
+    echo "::notice title=Model Run::Compiling Model '${MODEL_NAME}' with OMC and Running"
+    omc $MODEL_BUILD_SCRIPT
     echo "::endgroup::"
-
-    echo "::group::Run Model"
-    echo "::notice title=Model Run::Executing binary $BINARY_FILE"
-    BINARY_FILE=$(ls -tr | tail -n 1)
-    ./$BINARY_FILE
 fi
 
 echo "::group::OMC Export"
