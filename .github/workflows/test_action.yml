@@ -23,6 +23,12 @@ jobs:
 
         - name: Test OMC Still Available
           run: omc --version
+
+        - name: Cache Solutions
+          uses: actions/cache@v2
+          with:
+            path: "*.mat"
+            key: ${{ runner.os }}-model-solutions
         
         - name: Check results files still exist
           run: if [ -z "$(ls *.mat)" ]; then exit 1; fi
