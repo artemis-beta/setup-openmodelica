@@ -18,7 +18,7 @@ jobs:
             script: |
               loadLibrary(Modelica);
               simulate(Modelica.Fluid.Examples.HeatSystem);
-              printErrorString();
+              getErrorString();
 
         - name: Test OMC Still Available
           run: omc --version

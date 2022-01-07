@@ -76,7 +76,7 @@ if [ -n "${MODEL_SOURCE_PATH}" ]; then
     fi
 
     echo "simulate(${MODEL_NAME});" >> $MODEL_BUILD_SCRIPT
-    echo "printErrorString();" >> $MODEL_BUILD_SCRIPT
+    echo "getErrorString();" >> $MODEL_BUILD_SCRIPT
 
     echo "::notice title=Model Run::Created script '$MODEL_BUILD_SCRIPT':"
     cat $MODEL_BUILD_SCRIPT
