@@ -24,4 +24,5 @@ jobs:
         - name: Test OMC Still Available
           run: omc --version
         
-
+        - name: Check results files still exist
+          run: if [ -z "$(ls *.mat)" ]; then exit 1; fi
