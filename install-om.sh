@@ -1,13 +1,11 @@
 #!/usr/bin/bash
-set -e
-
 echo "::group::Setup"
 
 echo "::notice title=Update Sources List"
 echo "deb https://build.openmodelica.org/apt `lsb_release -cs` release" | sudo tee /etc/apt/sources.list.d/openmodelica.list
 
 echo "::notice title=Add GPG Key"
-wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
+APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
 
 echo "::notice title=Update Package List"
 sudo apt update

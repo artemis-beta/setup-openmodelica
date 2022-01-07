@@ -7,6 +7,10 @@ inputs:
     description: OpenModelica Libraries to Install
     required: false
     default: ''
+  msl-version:
+    description: Version of Modelica Standard Library
+    required: false
+    default: '4.0.0'
   cpp-runtime-library:
     description: Install C++ Runtime Library
     required: false
@@ -33,7 +37,7 @@ runs:
         MODEL_SOURCE_PATH=${{ inputs.model-source-path }} \
         MODEL_NAME=${{ inputs.model-name }} \
         BUILD_DEBUG=${{ inputs.debug }} \
-        $GITHUB_ACTION_PATH/install-om.sh modelica@3.2.3 $(echo "${{ inputs.libraries }}" | xargs)
+        $GITHUB_ACTION_PATH/install-om.sh modelica@${{ inputs.msl-version }} $(echo "${{ inputs.libraries }}" | xargs)
       shell: bash
 
 branding:
