@@ -32,8 +32,3 @@ jobs:
 |`msl-version`|Version of Modelica Standard Library.|Defaults to latest stable version.|
 |`script-path`|A Modelica script (`.mos`) file to execute.|None|
 |`script`|OMShell script to execute.|None|
-
-## Results
-Any generated `.mat` files are added to the cache accessible under the key:
-
-`${{ runner.os }}-model-solutions`
