@@ -26,11 +26,11 @@ inputs:
   script-path:
     description: Path to Modelica script .mos file
     required: false
-    default: 'false'
+    default: ''
   script:
     description: Modelica script to run
     required: false
-    default: 'false'
+    default: ''
 
 runs:
   using: "composite"
@@ -45,7 +45,7 @@ runs:
 
     - name: Run Modelica Script
       run: omc ${{ inputs.script-path }}
-      if: ${{ inputs.script-path != 'false' }}
+      if: ${{ inputs.script-path != '' }}
       shell: bash
 
     - name: Run OMShell
@@ -54,7 +54,7 @@ runs:
         echo "Created script: "
         cat runScript.mos
         omc runScript.mos
-      if: ${{ inputs.script != 'false' }}
+      if: ${{ inputs.script != '' }}
       shell: bash
 
 branding:
