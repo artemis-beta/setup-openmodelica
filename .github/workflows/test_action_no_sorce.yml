@@ -1,0 +1,14 @@
+
+name: OpenModelica Action Check (without source)
+on: [release]
+jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: artemis-beta/setup-openmodelica@testing
+          with:
+            msl-version: '3.2.3'
+
+        - name: Test OMC Still Available
+          run: omc --version
