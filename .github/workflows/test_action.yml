@@ -16,7 +16,7 @@ jobs:
             model-name: SineCurrentModel
             msl-version: '3.2.3'
             script: |
-              loadLibrary(Modelica, {"3.2.3"});
+              loadModel(Modelica, {"3.2.3"});
               simulate(Modelica.Fluid.Examples.HeatingSystem);
               getErrorString();
 
