@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     -   name: Test Modelica Model
-        uses: artemis-beta/setup-modelica@v1
+        uses: artemis-beta/setup-modelica@v2
         with:
             libraries: |
                 PowerGrids
