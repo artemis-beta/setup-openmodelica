@@ -48,13 +48,7 @@ if [ "$#" -ne 0 ]; then
     echo "::endgroup::"
 fi
 
-if [ "${MODEL_SOURCE_PATH}" == "false" ]; then
-    if [ -n "$(ls *.mo | head -n 1)" ]; then
-        MODEL_SOURCE_PATH=$(ls *.mo | head -n 1)
-    fi
-fi
-
-if [ -n "${MODEL_SOURCE_PATH}" ]; then
+if [ "${MODEL_SOURCE_PATH}" != "false" ]; then
     echo "::group::Compile & Run Modelica Model"
     MODEL_BUILD_SCRIPT=$PWD/modelBuild.mos
 
