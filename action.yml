@@ -44,17 +44,18 @@ runs:
       shell: bash
 
     - name: Run Modelica Script
-      run: omc ${{ inputs.script-path }}
-      if: ${{ inputs.script-path != '' }}
+      run: |
+        if [ -z "${{ inputs.script-path }}" ]; then echo "No OMShell script to run"; exit 0; fi
+        omc ${{ inputs.script-path }}
       shell: bash
 
     - name: Run OMShell
       run: |
+        if [ -z "${{ inputs.script }}" ]; then echo "No OMShell commands to run"; exit 0; fi
         printf '${{ inputs.script }}' > runScript.mos
         echo "Created script: "
         cat runScript.mos
         omc runScript.mos
-      if: ${{ inputs.script != '' }}
       shell: bash
 
 branding:
