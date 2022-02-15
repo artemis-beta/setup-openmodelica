@@ -9,17 +9,18 @@ jobs:
     steps:
     -   name: Test Modelica Model
         uses: artemis-beta/setup-modelica@v1
-        libraries: |
-            PowerGrids
-            SystemDynamics@2.1.1
-        cpp-runtime-library: install
-        model-source-path: testing/SineCurrent.mo
-        model-name: SineCurrentModel
-        msl-version: '3.2.3'
-        script: |
-            loadLibrary(Modelica);
-            simulate(Modelica.Fluid.Examples.HeatSystem);
-            printErrorString();
+        with:
+            libraries: |
+                PowerGrids
+                SystemDynamics@2.1.1
+            cpp-runtime-library: install
+            model-source-path: testing/SineCurrent.mo
+            model-name: SineCurrentModel
+            msl-version: '3.2.3'
+            script: |
+                loadLibrary(Modelica);
+                simulate(Modelica.Fluid.Examples.HeatSystem);
+                printErrorString();
 ```
 
 ## Options
