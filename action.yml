@@ -45,7 +45,7 @@ runs:
 
     - name: Run Modelica Script
       run: omc ${{ inputs.script-path }}
-      if: ${{ inputs.script-path != 'false' }}
+      if: inputs.script-path != 'false'
       shell: bash
 
     - name: Run OMShell
@@ -54,7 +54,7 @@ runs:
         echo "Created script: "
         cat runScript.mos
         omc runScript.mos
-      if: ${{ inputs.script != 'false' }}
+      if: inputs.script != 'false'
       shell: bash
 
 branding:
