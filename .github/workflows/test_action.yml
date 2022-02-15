@@ -17,7 +17,7 @@ jobs:
             msl-version: '3.2.3'
             script: |
               loadLibrary(Modelica, {"3.2.3"});
-              simulate(Modelica.Fluid.Examples.HeatSystem);
+              simulate(Modelica.Fluid.Examples.HeatingSystem);
               getErrorString();
 
         - name: Test OMC Still Available
